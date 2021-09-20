@@ -1,29 +1,62 @@
-# express-locallibrary-tutorial
-Tutorial "Local Library" website written in in Node/Express.
+## How to Deploy a Node-Express App on Amazon EC2
 
-----
-
-This web application creates an online catalog for a small local library, where users can browse available books and manage their accounts.
-
-![](https://github.com/mdn/express-locallibrary-tutorial/blob/master/public/images/Library%20Website%20-%20Mongoose_Express.png)
+The purpose of this repository is to demonstrate how to deploy a simple web application built by Express - Node.js web application framework on Amazon EC2  
 
 
-For more information see the associated [MDN tutorial home page](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website).
+###  Launch an Instance
+
+- For the Instance Type, you might choose t3.micro which will be sufficient for
+this demonstration.
+
+- Update your Security Group Settings to allow SSH for login, HTTP for web access
+as well as Custom TCP for 3000 port which will be listening port of the
+application. Refer to below image in case needed:
+<p align="center">
+    <img src="./diagram/security_group.png" alt="security_group" />
+<p>
 
 
-> **Note** The [auth branch](/../../tree/auth) in this repository implements an *unsupported* and *undocumented* version of the library with User Authentication and Authorization. This may be a useful starting point for some users.
+### Install Node on your Amazon EC2 Instance by running below commands :
 
+- SSH into your instance and follow below commands
 
-## Quick Start
+    ```bash
+    $ sudo yum update -y
+    $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+    $ . ~/.nvm/nvm.sh
+    $ nvm install node     
+    # to check whether the installation was successful   
+    $ node -e "console.log('Running Node.js ' + process.version)"
+    ```
 
-To get this project up and running locally on your computer:
+### Install Git on your Amazon EC2 Instance by running below commands :
 
-1. Set up a [Nodejs](https://wiki.developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment) development environment.
-1. Once you have node setup, enter the following commands in the root of your clone of this repo:
-   ```
-   npm install
-   DEBUG=express-locallibrary-tutorial:* npm run devstart   #For linux
-   ```
-1. Open a browser to http://localhost:3000/ to open the library site.
+- SSH into your instance and follow below commands
 
-> **Note:** The library uses a default MongoDb database hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). You should use a different database for your own code experiments.
+    ```bash
+    $ sudo yum install git -y
+    $ git --version
+    $ git clone https://github.com/aws-samples/amazon-ec2-demo-with-node-express
+    $ cd amazon-ec2-demo-with-node-express/
+    # to deploy packages and install dependencies  
+    $ npm install
+    $ node calculator.js
+    ```
+
+#### OPTIONAL : To keep you applications up and running all the time use an NPM Package.
+
+- For the purpose of this demonstration, we're using [`PM2`](https://www.npmjs.com/package/pm2) which was already included in `package.json`
+```bash
+$ sudo pm2 calculator.js
+```
+
+Now you'll be able to use the web application on the Public IP (or DNS) of your
+EC2 instance.
+
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This library is licensed under the MIT-0 License. See the LICENSE file.
